@@ -32,14 +32,22 @@ def date_to_nyt_url(date):
     return f"https://www.nytimes.com/crosswords/game/daily/{date.year}/{date.month}/{date.day}"
 
 
-def run_generator():
-    generated = False
-    while not generated:
-        print("Select a weekday:\n")
-        for i, day in enumerate(WEEKDAYS):
-            print(f"{i}: {day}")
-        print("7: no preference")
+def output_options():
+    print("Select a weekday:\n")
+    for i, day in enumerate(WEEKDAYS):
+        print(f"{i}: {day}")
+    print("7: no preference")
 
+
+def output_puzzle(date):
+    print(f"\nGenerated a link to a random {WEEKDAYS[date.weekday()]} puzzle:")
+    print(date_to_nyt_url(date))
+
+
+def run_generator():
+    puzzle_date = None
+    while not puzzle_date:
+        output_options()
         user_choice = input("\nYour choice: ")
         if user_choice.isdigit():
             user_choice_int = int(user_choice)
@@ -47,20 +55,12 @@ def run_generator():
                 puzzle_date = random_weekday(
                     NYT_ARCHIVE_START, TODAYS_DATE, user_choice_int
                 )
-                print(
-                    f"\nGenerated a link to a random {WEEKDAYS[user_choice_int]} puzzle:"
-                )
-                print(date_to_nyt_url(puzzle_date))
-                generated = True
             elif user_choice_int == 7:
                 puzzle_date = random_date(NYT_ARCHIVE_START, TODAYS_DATE)
-                print(
-                    f"\nGenerated a link to a random {WEEKDAYS[puzzle_date.weekday()]} puzzle:"
-                )
-                print(date_to_nyt_url(puzzle_date))
-                generated = True
 
-        if not generated:
+        if puzzle_date:
+            output_puzzle(puzzle_date)
+        else:
             print(
                 "\nYou must enter an integer between 0 and 7 (inclusive). Try again.\n"
             )
