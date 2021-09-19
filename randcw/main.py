@@ -15,16 +15,17 @@ WEEKDAYS = [
 ]
 
 
-def random_date(start_date, end_date):
+def random_date_helper(start_date, end_date):
     delta = end_date - start_date
     random_day = random.randrange(delta.days)
     return start_date + datetime.timedelta(days=random_day)
 
 
-def random_weekday(start_date, end_date, weekday):
+def random_date(start_date, end_date, weekday=None):
     while True:
-        date = random_date(start_date, end_date)
-        if date.weekday() == weekday:
+        date = random_date_helper(start_date, end_date)
+        # generate a new date if until we get the one we're looking for if one is specified
+        if weekday == None or date.weekday() == weekday:
             return date
 
 
@@ -49,16 +50,12 @@ def run_generator():
     while not puzzle_date:
         output_options()
         user_choice = input("\nYour choice: ")
-        if user_choice.isdigit():
-            user_choice_int = int(user_choice)
-            if 0 <= user_choice_int < 7:
-                puzzle_date = random_weekday(
-                    NYT_ARCHIVE_START, TODAYS_DATE, user_choice_int
-                )
-            elif user_choice_int == 7:
-                puzzle_date = random_date(NYT_ARCHIVE_START, TODAYS_DATE)
-
-        if puzzle_date:
+        if user_choice.isdigit() and 0 <= int(user_choice) <= 7:
+            puzzle_date = random_date(
+                NYT_ARCHIVE_START,
+                TODAYS_DATE,
+                None if int(user_choice) == 7 else int(user_choice),
+            )
             output_puzzle(puzzle_date)
         else:
             print(
