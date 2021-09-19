@@ -1,0 +1,20 @@
+# IDE
+.vscode
+
+# Python auto-generated files
+*.pyc
+__pycache__/
+*.egg-info*
+dist/
+env/
+venv/
+venv3/
+.venv/
+
+# JS
+node_modules/
+bundle.js
+
+# direnv
+.envrc
+.env
