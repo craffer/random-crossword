@@ -38,20 +38,31 @@ def run_generator():
         print("Select a weekday:\n")
         for i, day in enumerate(WEEKDAYS):
             print(f"{i}: {day}")
+        print("7: no preference")
 
         user_choice = input("\nYour choice: ")
-        if user_choice.isdigit() and 0 <= int(user_choice) < 7:
+        if user_choice.isdigit():
             user_choice_int = int(user_choice)
-            print(f"\nGenerated a link to a random {WEEKDAYS[user_choice_int]} puzzle:")
-            print(
-                date_to_nyt_url(
-                    random_weekday(NYT_ARCHIVE_START, TODAYS_DATE, user_choice_int)
+            if 0 <= user_choice_int < 7:
+                puzzle_date = random_weekday(
+                    NYT_ARCHIVE_START, TODAYS_DATE, user_choice_int
                 )
-            )
-            generated = True
-        else:
+                print(
+                    f"\nGenerated a link to a random {WEEKDAYS[user_choice_int]} puzzle:"
+                )
+                print(date_to_nyt_url(puzzle_date))
+                generated = True
+            elif user_choice_int == 7:
+                puzzle_date = random_date(NYT_ARCHIVE_START, TODAYS_DATE)
+                print(
+                    f"\nGenerated a link to a random {WEEKDAYS[puzzle_date.weekday()]} puzzle:"
+                )
+                print(date_to_nyt_url(puzzle_date))
+                generated = True
+
+        if not generated:
             print(
-                "\nYou must enter an integer between 0 and 6 (inclusive). Try again.\n"
+                "\nYou must enter an integer between 0 and 7 (inclusive). Try again.\n"
             )
 
 
