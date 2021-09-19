@@ -8,9 +8,8 @@ TODAYS_DATE = datetime.date.today()
 
 def random_date(start_date, end_date):
     delta = end_date - start_date
-    int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
-    random_second = random.randrange(int_delta)
-    return start_date + datetime.timedelta(seconds=random_second)
+    random_day = random.randrange(delta.days)
+    return start_date + datetime.timedelta(days=random_day)
 
 
 def random_weekday(start_date, end_date, weekday):
